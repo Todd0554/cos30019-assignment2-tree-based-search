@@ -2,13 +2,19 @@ import sys
 
 class Search:
 
+    nodes = {}
+    edges = {}
+    origin = {}
+    destinations = {}
+    
+    
     def __init__(self, nodes, edges, origin, destination):
         self.nodes = nodes
         self.edges = edges
         self.origin = origin
         self.destination = destination
         
-    def algoritm_selection(method):
+    def algoritm_selection(self, method):
         match method:
             case 'DFS':
                 self.DFS()
@@ -26,7 +32,13 @@ class Search:
                 print("Invalid method selected.")
                 
     def DFS(self):
+        # path = []
+        # numOfNodes = len(path)
+        # for
         
+        # for node in self.nodes:
+            
+            
         return
         
     def BFS(self):

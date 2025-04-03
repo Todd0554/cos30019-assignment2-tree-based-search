@@ -4,8 +4,8 @@ class Search:
 
     nodes = {}
     edges = {}
-    origin = {}
-    destinations = {}
+    origin = None
+    destinations = None
     
     
     def __init__(self, nodes, edges, origin, destination):
@@ -31,6 +31,7 @@ class Search:
             case _:
                 print("Invalid method selected.")
                 
+    # Depth-First-Search
     def DFS(self):
         # path = []
         # numOfNodes = len(path)
@@ -40,19 +41,20 @@ class Search:
             
             
         return
-        
+    
+    # Breadth-First-Search
     def BFS(self):
         
         return
         
         
-        
+    # Greedy Best-First Search
     def GBFS(self):
         
         return
         
         
-    
+    # A*
     def Astar(self):
         
         return

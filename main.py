@@ -13,6 +13,7 @@ destinations = None
 if len(sys.argv) == 3 :
     path = sys.argv[1]
     algorithMethod = sys.argv[2]
+    goal = None
     if os.path.isfile(path):
         with open(path, "r") as file:
             section = None
@@ -53,10 +54,14 @@ if len(sys.argv) == 3 :
                 elif section == "destinations":
                     dest_list = line.strip().split(";")
                     destinations = [int(x.strip()) for x in dest_list]
-        print("Nodes:", nodes)
-        print("Edges:", edges)
-        print("Origin:", origin)
-        print("Destinations:", destinations)
+                    goal = len(destinations)
+        
+        print(path, " ", algorithMethod)
+        print("goal: ", goal)
+        # print("Nodes:", nodes)
+        # print("Edges:", edges)
+        # print("Origin:", origin)
+        # print("Destinations:", destinations)
 
 
         # instantiate the Search class

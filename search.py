@@ -33,11 +33,12 @@ class Search:
                 
     # Depth-First-Search
     def DFS(self):
-        # path = []
-        # numOfNodes = len(path)
-        # for
         
-        # for node in self.nodes:
+        # path = []
+        
+        # for edge in self.edges:
+        #     if edge.key[0] == self.origin
+                
             
             
         return

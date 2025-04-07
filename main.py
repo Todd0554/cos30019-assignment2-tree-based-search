@@ -57,6 +57,7 @@ if len(sys.argv) == 3 :
                     goal = len(destinations)
         
         print(path, " ", algorithMethod)
+
         
         
         # need to be commented out
@@ -64,11 +65,11 @@ if len(sys.argv) == 3 :
         # print("Edges:", edges)
         # print("Origin:", origin)
         # print("Destinations:", destinations)
+
         
         if origin is None:
             print("Origin not found.")
             sys.exit(1)
-        print("goal: ", goal)
         # instantiate the Search class  
         search = Search()
         search.nodes = nodes

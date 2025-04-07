@@ -4,6 +4,12 @@ import heapq
 from collections import deque
 
 class Search:
+
+    nodes = {}
+    edges = {}
+    origin = None
+    destinations = []
+
     def __init__(self):
         self.nodes = {}
         self.edges = {}
@@ -27,16 +33,68 @@ class Search:
             case _:
                 print("Invalid method selected.")
                 
+    # Depth-First-Search
     def DFS(self):
-        # path = []
-        # numOfNodes = len(path)
-        # for
         
-        # for node in self.nodes:
-            
-            
-        return
+        # to record the path
+        path = [self.origin]
         
+        # a list to keep track of destinations, the destinations path is found, that destination will be removed from dest not from the destinations list
+        dest = self.destinations
+        
+        # a set to keep track of visited nodes
+        visited = set()
+        
+        # a boolean to check if a path is found
+        find_path = False
+        
+        # a boolean to control the loop
+        loop = True
+        
+        while loop:
+            loop = False 
+            while path:
+                current = path[-1]
+                visited.add(current)
+
+                if current in dest:
+                    find_path = True
+                    print(self.nodes[dest[0]], " ", len(path))
+                    print(" ".join(map(str, path)))
+                    path = [self.origin]
+                    visited = set()
+                    dest.remove(current)
+                    loop = True 
+                    break
+
+                # find all neighbors of the current node
+                candidate_neighbors = []
+                for key in self.edges:
+                    from_node, to_node = key
+                    if from_node == current and to_node not in visited:
+                        candidate_neighbors.append(to_node)
+
+                candidate_neighbors = sorted(candidate_neighbors)
+
+                # try the first neighbor found
+                found_neighbor = False
+                for neighbor in candidate_neighbors:
+                    path.append(neighbor)
+                    found_neighbor = True
+                    break
+
+                if not found_neighbor:
+                    path.pop()
+            
+            # if all destinations are checked but no path is found
+            if  not find_path:
+                print("No path found")
+                break
+        return   
+        
+
+        
+    # breadth-first search 
     def BFS(self):
         # to record the path
         path = [self.origin]
@@ -99,7 +157,9 @@ class Search:
         (x1, y1) = self.nodes[node]
         (x2, y2) = self.nodes[goal]
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
-            
+
+    # Greedy Best-First Search
+
     def GBFS(self):
         """Greedy Best-First Search using only the heuristic."""
         frontier = []
@@ -122,6 +182,9 @@ class Search:
                     heapq.heappush(frontier, (new_h, to_node, path + [to_node]))
         print("No path found")
         
+        
+        
+    # A*
     def Astar(self):
         
         return

@@ -6,13 +6,14 @@ from search import Search
 nodes = {}
 edges = {}
 origin = None
-destinations = None
+destinations = []
 
 # read the file path and algorithm method from command line argument
 
 if len(sys.argv) == 3 :
     path = sys.argv[1]
     algorithMethod = sys.argv[2]
+    goal = None
     if os.path.isfile(path):
         with open(path, "r") as file:
             section = None
@@ -53,15 +54,27 @@ if len(sys.argv) == 3 :
                 elif section == "destinations":
                     dest_list = line.strip().split(";")
                     destinations = [int(x.strip()) for x in dest_list]
-        print("Nodes:", nodes)
-        print("Edges:", edges)
-        print("Origin:", origin)
-        print("Destinations:", destinations)
-
-
-        # instantiate the Search class
-        search = Search(nodes, edges, origin, destinations)  
+                    goal = len(destinations)
         
+        print(path, " ", algorithMethod)
+        
+        
+        # need to be commented out
+        # print("Nodes:", nodes)
+        # print("Edges:", edges)
+        # print("Origin:", origin)
+        # print("Destinations:", destinations)
+        
+        if origin is None:
+            print("Origin not found.")
+            sys.exit(1)
+        print("goal: ", goal)
+        # instantiate the Search class  
+        search = Search()
+        search.nodes = nodes
+        search.edges = edges
+        search.origin = origin
+        search.destinations = destinations
         search.algoritm_selection(algorithMethod)
     else:
         print("File not found.")
@@ -69,4 +82,3 @@ if len(sys.argv) == 3 :
 else:
     print("Please provide the file path and algorithm method as command line arguments.")
     sys.exit(1)
-

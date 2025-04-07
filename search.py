@@ -5,7 +5,7 @@ class Search:
     nodes = {}
     edges = {}
     origin = None
-    destinations = None
+    destinations = {}
     
     
     def __init__(self, nodes, edges, origin, destination):
@@ -34,14 +34,7 @@ class Search:
     # Depth-First-Search
     def DFS(self):
         
-        # path = []
-        
-        # for edge in self.edges:
-        #     if edge.key[0] == self.origin
-                
-            
-            
-        return
+
     
     # Breadth-First-Search
     def BFS(self):

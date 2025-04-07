@@ -163,26 +163,29 @@ class Search:
     def GBFS(self):
         """Greedy Best-First Search using only the heuristic."""
         frontier = []
-        # Use the minimum heuristic value among all destinations as the initial value.
         init_h = min(self.heuristic(self.origin, goal) for goal in self.destinations)
         heapq.heappush(frontier, (init_h, self.origin, [self.origin]))
         visited = set()
+
         while frontier:
             h_val, current, path = heapq.heappop(frontier)
             if current in visited:
                 continue
             visited.add(current)
+
             if current in self.destinations:
+                x, y = self.nodes[current]
+                print(f"({x}, {y})  {len(visited)}")
                 print(" ".join(map(str, path)))
                 return
-            # Expand neighbors.
+
             for (from_node, to_node), cost in self.edges.items():
                 if from_node == current and to_node not in visited:
                     new_h = min(self.heuristic(to_node, goal) for goal in self.destinations)
                     heapq.heappush(frontier, (new_h, to_node, path + [to_node]))
-        print("No path found")
-        
-        
+
+        print("Path not found.")
+
         
     # A*
     def Astar(self):

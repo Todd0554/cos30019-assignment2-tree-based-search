@@ -70,6 +70,16 @@ if len(sys.argv) == 3 :
         if origin is None:
             print("Origin not found.")
             sys.exit(1)
+        if not destinations:
+            print("Destinations not found.")
+            sys.exit(1)
+        if not nodes:
+            print("Nodes not found.")
+            sys.exit(1)
+        if not edges:
+            print("Edges not found.")
+            sys.exit(1)
+            
         # instantiate the Search class  
         search = Search()
         search.nodes = nodes

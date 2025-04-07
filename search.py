@@ -54,10 +54,10 @@ class Search:
             while path:
                 current = path[-1]
                 visited.add(current)
-                # print(visited)
-                # print(self.destinations)
+
                 if current in dest:
                     find_path = True
+                    print(self.nodes[dest[0]], " ", len(path))
                     print(" ".join(map(str, path)))
                     path = [self.origin]
                     visited = set()
@@ -88,8 +88,6 @@ class Search:
             if  not find_path:
                 print("No path found")
                 break
-            
-               
         return   
         
 

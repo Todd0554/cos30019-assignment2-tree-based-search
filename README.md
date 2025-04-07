@@ -2,3 +2,6 @@
 ## For MacBook user please using the command:
 ### `python3 main.py PathFinder-test.txt method`
 ### method can be `DFS`, `BFS`, `GBFS`, `AS`, `CUS1`, `CUS2`
+
+## For Windows user please using the command:
+### `python main.py PathFinder-test.txt method`

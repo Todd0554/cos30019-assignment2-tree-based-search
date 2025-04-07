@@ -48,48 +48,43 @@ class Search:
         # a boolean to check if a path is found
         find_path = False
         
-        # a boolean to control the loop
-        loop = True
-        
-        while loop:
-            loop = False 
-            while path:
-                current = path[-1]
-                visited.add(current)
 
-                if current in dest:
-                    find_path = True
-                    print(self.nodes[dest[0]], " ", len(path))
-                    print(" ".join(map(str, path)))
-                    path = [self.origin]
-                    visited = set()
-                    dest.remove(current)
-                    loop = True 
-                    break
+        while path:
+            current = path[-1]
+            visited.add(current)
 
-                # find all neighbors of the current node
-                candidate_neighbors = []
-                for key in self.edges:
-                    from_node, to_node = key
-                    if from_node == current and to_node not in visited:
-                        candidate_neighbors.append(to_node)
+            if current in dest:
+                find_path = True
+                print(self.nodes[dest[0]], " ", len(path))
+                print(", ".join(map(str, path)))
+                path = [self.origin]
+                visited = set()
+                dest.remove(current)
+                break
 
-                candidate_neighbors = sorted(candidate_neighbors)
+            # find all neighbors of the current node
+            candidate_neighbors = []
+            for key in self.edges:
+                from_node, to_node = key
+                if from_node == current and to_node not in visited:
+                    candidate_neighbors.append(to_node)
 
-                # try the first neighbor found
-                found_neighbor = False
-                for neighbor in candidate_neighbors:
-                    path.append(neighbor)
-                    found_neighbor = True
-                    break
+            candidate_neighbors = sorted(candidate_neighbors)
 
-                if not found_neighbor:
-                    path.pop()
+            # try the first neighbor found
+            found_neighbor = False
+            for neighbor in candidate_neighbors:
+                path.append(neighbor)
+                found_neighbor = True
+                break
+
+            if not found_neighbor:
+                path.pop()
             
             # if all destinations are checked but no path is found
-            if  not find_path:
-                print("No path found")
-                break
+        if  not find_path:
+            print("No path found")
+        
         return   
         
 

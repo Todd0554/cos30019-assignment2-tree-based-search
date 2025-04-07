@@ -6,7 +6,7 @@ from search import Search
 nodes = {}
 edges = {}
 origin = None
-destinations = None
+destinations = []
 
 # read the file path and algorithm method from command line argument
 
@@ -58,6 +58,8 @@ if len(sys.argv) == 3 :
         
         print(path, " ", algorithMethod)
         print("goal: ", goal)
+        
+        # need to be commented out
         # print("Nodes:", nodes)
         # print("Edges:", edges)
         # print("Origin:", origin)
@@ -65,7 +67,11 @@ if len(sys.argv) == 3 :
 
 
         # instantiate the Search class
-        search = Search(nodes, edges, origin, destinations)  
+        search = Search()
+        search.nodes = nodes
+        search.edges = edges
+        search.origin = origin
+        search.destinations = destinations
         
         search.algoritm_selection(algorithMethod)
     else:

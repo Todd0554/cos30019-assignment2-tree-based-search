@@ -33,10 +33,19 @@ class Search:
                 
     # Depth-First-Search
     def DFS(self):
+        # to record the path
         path = [self.origin]
+        
+        # a list to keep track of destinations, the destinations path is found, that destination will be removed from dest not from the destinations list
         dest = self.destinations
+        
+        # a set to keep track of visited nodes
         visited = set()
+        
+        # a boolean to check if a path is found
         find_path = False
+        
+        # a boolean to control the loop
         loop = True
         
         while loop:
@@ -55,7 +64,7 @@ class Search:
                     loop = True 
                     break
 
-                # 找所有从 current 出发的邻居
+                # find all neighbors of the current node
                 candidate_neighbors = []
                 for key in self.edges:
                     from_node, to_node = key
@@ -64,7 +73,7 @@ class Search:
 
                 candidate_neighbors = sorted(candidate_neighbors)
 
-                # 尝试第一个可用邻居
+                # try the first neighbor found
                 found_neighbor = False
                 for neighbor in candidate_neighbors:
                     path.append(neighbor)
@@ -74,6 +83,7 @@ class Search:
                 if not found_neighbor:
                     path.pop()
             
+            # if all destinations are checked but no path is found
             if  not find_path:
                 print("No path found")
                 break

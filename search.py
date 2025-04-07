@@ -33,6 +33,7 @@ class Search:
                 
     # Depth-First-Search
     def DFS(self):
+        
         # to record the path
         path = [self.origin]
         

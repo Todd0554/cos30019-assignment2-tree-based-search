@@ -57,22 +57,24 @@ if len(sys.argv) == 3 :
                     goal = len(destinations)
         
         print(path, " ", algorithMethod)
-        print("goal: ", goal)
+        
         
         # need to be commented out
         # print("Nodes:", nodes)
         # print("Edges:", edges)
         # print("Origin:", origin)
         # print("Destinations:", destinations)
-
-
-        # instantiate the Search class
+        
+        if origin is None:
+            print("Origin not found.")
+            sys.exit(1)
+        print("goal: ", goal)
+        # instantiate the Search class  
         search = Search()
         search.nodes = nodes
         search.edges = edges
         search.origin = origin
         search.destinations = destinations
-        
         search.algoritm_selection(algorithMethod)
     else:
         print("File not found.")

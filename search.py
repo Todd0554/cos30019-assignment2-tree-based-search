@@ -205,7 +205,6 @@ class Search:
                 print("No path found.")
                 break
         return
-
         
     # A*
     def Astar(self):

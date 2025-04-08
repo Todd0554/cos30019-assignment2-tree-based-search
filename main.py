@@ -56,7 +56,7 @@ if len(sys.argv) == 3 :
                     destinations = [int(x.strip()) for x in dest_list]
                     goal = len(destinations)
         
-        print(path, " ", algorithMethod)
+        print(path, algorithMethod)
 
         
         
@@ -70,7 +70,16 @@ if len(sys.argv) == 3 :
         if origin is None:
             print("Origin not found.")
             sys.exit(1)
-            
+
+        if not destinations:
+            print("Destinations not found.")
+            sys.exit(1)
+        if not nodes:
+            print("Nodes not found.")
+            sys.exit(1)
+        if not edges:
+            print("Edges not found.")
+            sys.exit(1)
         if len(destinations) == 0:
             print("Origin not found.")
             sys.exit(1)

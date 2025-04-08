@@ -24,7 +24,7 @@ class Search:
                 self.BFS()
             case 'GBFS':
                 self.GBFS()
-            case 'AS':
+            case 'A*':
                 self.Astar()
             case 'CUS1': 
                 self.CUS1()
@@ -91,7 +91,29 @@ class Search:
         
     # breadth-first search 
     def BFS(self):
-       
+        # Initialize a queue with the origin node and its path
+        queue = deque([(self.origin, [self.origin])])
+        visited = set()
+
+        while queue:
+            # Dequeue the first element
+            current, path = queue.popleft()
+
+            # If the current node is a destination, print the path and return
+            if current in self.destinations:
+                print(" ".join(map(str, path)))
+                return
+
+            # Mark the current node as visited
+            visited.add(current)
+
+            # Add all unvisited neighbors to the queue
+            for (from_node, to_node), cost in self.edges.items():
+                if from_node == current and to_node not in visited:
+                    queue.append((to_node, path + [to_node]))
+
+        # If no path is found
+        print("No path found")
         return
         
     def heuristic(self, node, goal):
@@ -129,56 +151,7 @@ class Search:
     # A*
     def Astar(self):
         
-            def euclidean_heuristic(node, goals, coordinates):
-                x1, y1 = coordinates[node]
-                return min(math.sqrt((x1 - coordinates[g][0])**2 + (y1 - coordinates[g][1])**2) for g in goals)
-
-            # Build graph in form: node -> list of (neighbor, cost)
-            graph = {}
-            for (from_node, to_node), cost in self.edges.items():
-                if from_node not in graph:
-                    graph[from_node] = []
-                graph[from_node].append((to_node, cost))
-
-            frontier = []
-            heapq.heappush(frontier, (0, self.origin))
-
-            came_from = {self.origin: None}
-            cost_so_far = {self.origin: 0}
-            nodes_expanded = 0
-
-            while frontier:
-                _, current = heapq.heappop(frontier)
-                nodes_expanded += 1
-
-                if current in self.destinations:
-                    # Reconstruct path
-                    path = []
-                    node = current
-                    while current is not None:
-                        path.append(current)
-                        current = came_from[current]
-                    path.reverse()
-
-                    # Print in required format
-                    print(f"{sys.argv[1]} AS")
-                    print(f"{node} {nodes_expanded}")
-                    print(" -> ".join(map(str, path)))
-                    return
-
-                for neighbor, cost in graph.get(current, []):
-                    new_cost = cost_so_far[current] + cost
-                    if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
-                        cost_so_far[neighbor] = new_cost
-                        priority = new_cost + euclidean_heuristic(neighbor, self.destinations, self.nodes)
-                        heapq.heappush(frontier, (priority, neighbor))
-                        came_from[neighbor] = current
-
-            # If no goal was reached
-            print("No path found.")
-
-        
-     
+        return
         
         
     def CUS1(self):

@@ -93,7 +93,29 @@ class Search:
         
     # breadth-first search 
     def BFS(self):
+        # Initialize a queue with the origin node and its path
+        queue = deque([(self.origin, [self.origin])])
+        visited = set()
 
+        while queue:
+            # Dequeue the first element
+            current, path = queue.popleft()
+
+            # If the current node is a destination, print the path and return
+            if current in self.destinations:
+                print(" ".join(map(str, path)))
+                return
+
+            # Mark the current node as visited
+            visited.add(current)
+
+            # Add all unvisited neighbors to the queue
+            for (from_node, to_node), cost in self.edges.items():
+                if from_node == current and to_node not in visited:
+                    queue.append((to_node, path + [to_node]))
+
+        # If no path is found
+        print("No path found")
         return
 
       
@@ -102,7 +124,7 @@ class Search:
             """Euclidean distance between node and goal."""
             (x1, y1) = self.nodes[node]
             (x2, y2) = self.nodes[goal]
-            return math.sqrt((x1 - x2)  2 + (y1 - y2)  2)
+            return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
         """Greedy Best-First Search using only the heuristic."""
         frontier = []
         init_h = min(heuristic(self.origin, goal) for goal in self.destinations)
@@ -128,14 +150,14 @@ class Search:
         print("No path found")
         return
         
-    # A*
-    
+   # A*
     def Astar(self):
+        
         def euclidean_heuristic(node, goals, coordinates):
             x1, y1 = coordinates[node]
             return min(math.sqrt((x1 - coordinates[g][0])**2 + (y1 - coordinates[g][1])**2) for g in goals)
 
-            # Build graph in form: node -> list of (neighbor, cost)
+        # Build graph in form: node -> list of (neighbor, cost)
         graph = {}
         for (from_node, to_node), cost in self.edges.items():
             if from_node not in graph:
@@ -150,23 +172,33 @@ class Search:
         nodes_expanded = 0
 
         while frontier:
-            h_val, current, path = heapq.heappop(frontier)
-            if current in visited:
-                continue
-            visited.add(current)
+            _, current = heapq.heappop(frontier)
+            nodes_expanded += 1
 
             if current in self.destinations:
-                print(f"{current} {len(path)}")
+                # Reconstruct path
+                path = []
+                node = current
+                while current is not None:
+                    path.append(current)
+                    current = came_from[current]
+                path.reverse()
+
+                # Print in required format
+                print(f"{node} {nodes_expanded}")
                 print(" ".join(map(str, path)))
                 return
 
-            for (from_node, to_node), cost in self.edges.items():
-                if from_node == current and to_node not in visited:
-                    new_h = min(heuristic(to_node, goal) for goal in self.destinations)
-                    heapq.heappush(frontier, (new_h, to_node, path + [to_node]))
+            for neighbor, cost in graph.get(current, []):
+                new_cost = cost_so_far[current] + cost
+                if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
+                    cost_so_far[neighbor] = new_cost
+                    priority = new_cost + euclidean_heuristic(neighbor, self.destinations, self.nodes)
+                    heapq.heappush(frontier, (priority, neighbor))
+                    came_from[neighbor] = current
 
-        print("No path found")
-        return
+        # If no goal was reached
+        print("No path found.")
   
     def CUS1(self):
 

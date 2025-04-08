@@ -24,7 +24,7 @@ class Search:
                 self.BFS()
             case 'GBFS':
                 self.GBFS()
-            case 'A*':
+            case 'AS':
                 self.Astar()
             case 'CUS1': 
                 self.CUS1()
@@ -129,7 +129,56 @@ class Search:
     # A*
     def Astar(self):
         
-        return
+            def euclidean_heuristic(node, goals, coordinates):
+                x1, y1 = coordinates[node]
+                return min(math.sqrt((x1 - coordinates[g][0])**2 + (y1 - coordinates[g][1])**2) for g in goals)
+
+            # Build graph in form: node -> list of (neighbor, cost)
+            graph = {}
+            for (from_node, to_node), cost in self.edges.items():
+                if from_node not in graph:
+                    graph[from_node] = []
+                graph[from_node].append((to_node, cost))
+
+            frontier = []
+            heapq.heappush(frontier, (0, self.origin))
+
+            came_from = {self.origin: None}
+            cost_so_far = {self.origin: 0}
+            nodes_expanded = 0
+
+            while frontier:
+                _, current = heapq.heappop(frontier)
+                nodes_expanded += 1
+
+                if current in self.destinations:
+                    # Reconstruct path
+                    path = []
+                    node = current
+                    while current is not None:
+                        path.append(current)
+                        current = came_from[current]
+                    path.reverse()
+
+                    # Print in required format
+                    print(f"{sys.argv[1]} AS")
+                    print(f"{node} {nodes_expanded}")
+                    print(" -> ".join(map(str, path)))
+                    return
+
+                for neighbor, cost in graph.get(current, []):
+                    new_cost = cost_so_far[current] + cost
+                    if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
+                        cost_so_far[neighbor] = new_cost
+                        priority = new_cost + euclidean_heuristic(neighbor, self.destinations, self.nodes)
+                        heapq.heappush(frontier, (priority, neighbor))
+                        came_from[neighbor] = current
+
+            # If no goal was reached
+            print("No path found.")
+
+        
+     
         
         
     def CUS1(self):

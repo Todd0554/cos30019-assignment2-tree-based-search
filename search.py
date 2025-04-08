@@ -91,7 +91,29 @@ class Search:
         
     # breadth-first search 
     def BFS(self):
-       
+       # Initialize a queue with the origin node and its path
+        queue = deque([(self.origin, [self.origin])])
+        visited = set()
+
+        while queue:
+            # Dequeue the first element
+            current, path = queue.popleft()
+
+            # If the current node is a destination, print the path and return
+            if current in self.destinations:
+                print(" ".join(map(str, path)))
+                return
+
+            # Mark the current node as visited
+            visited.add(current)
+
+            # Add all unvisited neighbors to the queue
+            for (from_node, to_node), cost in self.edges.items():
+                if from_node == current and to_node not in visited:
+                    queue.append((to_node, path + [to_node]))
+
+        # If no path is found
+        print("No path found")
         return
         
     def heuristic(self, node, goal):

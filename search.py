@@ -59,7 +59,7 @@ class Search:
 
                 if current in dest:
                     find_path = True
-                    print(self.nodes[dest[0]], " ", len(path))
+                    print(f"{current} {len(path)}")
                     print(" ".join(map(str, path)))
                     path = [self.origin]
                     visited = set()
@@ -120,6 +120,7 @@ class Search:
                 # print(self.destinations)
                 if current in dest:
                     find_path = True
+                    print(f"{current} {len(path)}")
                     print(" ".join(map(str, path)))
                     path = [self.origin]
                     visited = set()
@@ -151,40 +152,59 @@ class Search:
                 print("No path found")
                 break
         return
-        
-    def heuristic(self, node, goal):
-        """Euclidean distance between node and goal."""
-        (x1, y1) = self.nodes[node]
-        (x2, y2) = self.nodes[goal]
-        return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
     # Greedy Best-First Search
 
     def GBFS(self):
-        """Greedy Best-First Search using only the heuristic."""
-        frontier = []
-        init_h = min(self.heuristic(self.origin, goal) for goal in self.destinations)
-        heapq.heappush(frontier, (init_h, self.origin, [self.origin]))
-        visited = set()
+        def heuristic(self, node, goal):
+            """Euclidean distance between node and goal."""
+            (x1, y1) = self.nodes[node]
+            (x2, y2) = self.nodes[goal]
+            return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+        
+        remaining_dest = set(self.destinations)
+        overall_explored = 0  # Global count across searches 
+    
+        # Continue until all destinations have been reached.
+        while remaining_dest:
+            # Initialize the frontier with a new search from the origin.
+            frontier = []
+            init_h = min(heuristic(self.origin, goal) for goal in remaining_dest)
+            heapq.heappush(frontier, (init_h, self.origin, [self.origin]))
+            visited = set()
+            found = False
+            
+            while frontier:
+                h_val, current, path = heapq.heappop(frontier)
+                if current in visited:
+                    continue
+                visited.add(current)
+                overall_explored += 1  # Count each expanded node
+                
+                if current in remaining_dest:
+                    print(f"{current} {len(path)}")
+                    print(" ".join(map(str, path)))
+                    remaining_dest.remove(current)
+                    found = True
+                    break
 
-        while frontier:
-            h_val, current, path = heapq.heappop(frontier)
-            if current in visited:
-                continue
-            visited.add(current)
-
-            if current in self.destinations:
-                x, y = self.nodes[current]
-                print(f"({x}, {y})  {len(visited)}")
-                print(" ".join(map(str, path)))
-                return
-
-            for (from_node, to_node), cost in self.edges.items():
-                if from_node == current and to_node not in visited:
-                    new_h = min(self.heuristic(to_node, goal) for goal in self.destinations)
-                    heapq.heappush(frontier, (new_h, to_node, path + [to_node]))
-
-        print("Path not found.")
+                # Expand neighbors: collect them first to enforce tie-breaking
+                neighbors = []
+                for (from_node, to_node), cost in self.edges.items():
+                    if from_node == current and to_node not in visited:
+                        # Compute new heuristic value using remaining destinations.
+                        new_h = min(heuristic(to_node, goal) for goal in remaining_dest)
+                        neighbors.append((new_h, to_node, path + [to_node]))
+                # Sort neighbors: primary by heuristic, then by node ID (ascending)
+                neighbors.sort(key=lambda x: (x[0], x[1]))
+                for item in neighbors:
+                    heapq.heappush(frontier, item)
+            
+            if not found:
+                # If no destination was reached in this run, then the remaining ones are unreachable.
+                print("No path found.")
+                break
+        return
 
         
     # A*

@@ -56,7 +56,7 @@ if len(sys.argv) == 3 :
                     destinations = [int(x.strip()) for x in dest_list]
                     goal = len(destinations)
         
-        print(path, " ", algorithMethod)
+        print(path, algorithMethod)
 
         
         

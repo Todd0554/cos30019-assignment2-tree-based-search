@@ -49,41 +49,52 @@ class Search:
         # a boolean to check if a path is found
         find_path = False
         
+        # while the length of path is noy 0
         while path:
-            current = path[-1]
-            visited.add(current)
+            # the current node we are at is the last node in the path[]
+            currentNode = path[-1]
+            # add the current node to the visited set
+            visited.add(currentNode)
 
-            if current in dest:
+            # if the current node is in the dest now is [5, 4]
+            if currentNode in dest:
+                # set the find_path to True, which means we found a path to one of the destinations
                 find_path = True
-                print(f"{current} {len(path)}")
+                # print the current node (destination node) and the length of the path
+                print(f"{currentNode} {len(path)}")
+                # print the path in the required format
                 print(" ".join(map(str, path)))
-                path = [self.origin]
-                visited = set()
-                dest.remove(current)
-                loop = True 
+                # the code below is for the next destination, but I found that we don't need to do this, DFS will stop when we find first destination
+                # path = [self.origin]
+                # visited = set()
+                # dest.remove(currentNode)
                 break
 
-            # find all neighbors of the current node
+            # find all neighbors (the nodes the current node can reach) of the current node
             candidate_neighbors = []
+            # key of edges is made from (node1, node2), node 1 is the from_node, node 2 is the next to_node
             for key in self.edges:
+                # get the from_node and to_node
                 from_node, to_node = key
-                if from_node == current and to_node not in visited:
+                # if the current node(from_node) can reach the next node(to_node), append to_node to the candidate_neighbors list
+                if from_node == currentNode and to_node not in visited:
                     candidate_neighbors.append(to_node)
-
-            candidate_neighbors = sorted(candidate_neighbors)
-
+            
             # try the first neighbor found
+            # if the candidate_neighbors list is empty, 
             found_neighbor = False
             for neighbor in candidate_neighbors:
                 path.append(neighbor)
+                print("path", path)
                 found_neighbor = True
                 break
 
+            # if the candidate_neighbors list is empty, delete the last node in the path[], then continue the loop to check other reachable nodes of the previous node(now is the lat node in path[])
             if not found_neighbor:
                 path.pop()
 
             
-            # if all destinations are checked but no path is found
+        # if all destinations are checked but no path is found
         if  not find_path:
             print("No path found")
         
@@ -200,9 +211,73 @@ class Search:
         # If no goal was reached
         print("No path found.")
   
+    # Dijkstra
     def CUS1(self):
+        start = self.origin
+        dest = set(self.destinations)
+        # from origin to each node, the lowest cost of each node, the cost can be updated in the loop 
+        # the data structure is like (node: cost)
+        min_cost = {start: 0}
+        
+        # (to node, from_node) pairs
+        came_from = {}
+        
+        # (0, start) means (cost, node), it will append more cost and node pairs
+        frontier = [(0, start)]
+        
+        visited = set()
 
-        return
+        while frontier:
+            # for checking the min cost dictionary
+            # print("######", min_cost, "######")
+            
+            # get the node we are at now in current
+            cost, currentNode = frontier.pop(0)
+            # if the node we loop now is already visited, we use continue to skip to next
+            if currentNode in visited:
+                continue
+            # if the node we loop now is not visited, we add it to the visited set
+            visited.add(currentNode)
+
+            # if the current node is a goal, we record the path
+            if currentNode in dest:
+                # set the path array
+                path = []
+                while currentNode is not None:
+                    # add the current node to the path[]
+                    path.append(currentNode)
+                    # change the current node to the previous node
+                    currentNode = came_from.get(currentNode)
+                # print("currentNode", currentNode)
+                # print("came_from", came_from)
+                # print("+currentNode", currentNode)
+                # reverse the path[] element squence
+                path.reverse()
+                print(f"{path[-1]} {len(path)}")
+                print(" ".join(map(str, path)))
+                return
+
+            # loop the edges dictionary and check the cost from origin to each node
+            for (from_node, to_node), edge_cost in self.edges.items():
+                # check if the from_node is the current node we are at now
+                if from_node == currentNode:
+                    # if it is, add the previous cost with the cost to the next node
+                    new_cost = cost + edge_cost
+                    # if the next node is not in min_cost dictionary or the new cost is lower than the cost before
+                    if to_node not in min_cost or new_cost < min_cost[to_node]:
+                        # add a new pair or update the previous pair in min_cost dictionary with "node: cost"
+                        min_cost[to_node] = new_cost
+                        # print("-came_from", came_from)
+                        # add or update the pair in came_from dictionary with "node: previous node"
+                        came_from[to_node] = currentNode
+                        # print("+came_from", came_from)
+                        # print("-frontier", frontier)
+                        # add the new cost and new next node or update lowest cost for node already exsit in frontier[]
+                        frontier.append((new_cost, to_node))
+                        # print("+frontier", frontier)
+
+        print("No path found.")
+
         
         
     def CUS2(self):

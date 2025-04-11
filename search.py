@@ -85,7 +85,6 @@ class Search:
             found_neighbor = False
             for neighbor in candidate_neighbors:
                 path.append(neighbor)
-                print("path", path)
                 found_neighbor = True
                 break
 
@@ -129,7 +128,7 @@ class Search:
         print("No path found")
         return
 
-      
+    #   Greedy Best-First Search
     def GBFS(self):
         def heuristic(node, goal):
             """Euclidean distance between node and goal."""
@@ -180,11 +179,9 @@ class Search:
 
         came_from = {self.origin: None}
         cost_so_far = {self.origin: 0}
-        nodes_expanded = 0
 
         while frontier:
             _, current = heapq.heappop(frontier)
-            nodes_expanded += 1
 
             if current in self.destinations:
                 # Reconstruct path
@@ -196,7 +193,7 @@ class Search:
                 path.reverse()
 
                 # Print in required format
-                print(f"{node} {nodes_expanded}")
+                print(f"{node} {len(path)}")
                 print(" ".join(map(str, path)))
                 return
 
@@ -279,7 +276,7 @@ class Search:
         print("No path found.")
 
         
-        
+        # Recursive Best-First Search
     def CUS2(self):
             def euclidean_heuristic(node, goal):
                 x1, y1 = self.nodes[node]

@@ -113,6 +113,7 @@ class Search:
 
             # If the current node is a destination, print the path and return
             if current in self.destinations:
+                print(f"{path[-1]} {len(path)}")
                 print(" ".join(map(str, path)))
                 return
 

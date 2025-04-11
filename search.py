@@ -128,32 +128,33 @@ class Search:
         return
 
 
-    #   Greedy Best-First Search
+    # Greedy Best-First Search
     def GBFS(self):
         def heuristic(node, goal):
-            """Euclidean distance between node and goal."""
+            # Euclidean distance between node and goal.
             (x1, y1) = self.nodes[node]
             (x2, y2) = self.nodes[goal]
             return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
-        """Greedy Best-First Search using only the heuristic."""
+        # Build graph in form: node -> list of (neighbor, cost)
         frontier = []
         init_h = min(heuristic(self.origin, goal) for goal in self.destinations)
         heapq.heappush(frontier, (init_h, self.origin, [self.origin]))
         visited = set()
-
+        # Initialize a priority queue with the origin node and its path
         while frontier:
             h_val, current, path = heapq.heappop(frontier)
             if current in visited:
                 continue
             visited.add(current)
-
+            # If the current node is a destination, print the path and return
             if current in self.destinations:
                 print(f"{current} {len(path)}")
                 print(" ".join(map(str, path)))
                 return
-
+            # Add all unvisited neighbors to the queue
             for (from_node, to_node), cost in self.edges.items():
                 if from_node == current and to_node not in visited:
+                    # Calculate the heuristic value for the neighbor node
                     new_h = min(heuristic(to_node, goal) for goal in self.destinations)
                     heapq.heappush(frontier, (new_h, to_node, path + [to_node]))
 
@@ -284,36 +285,36 @@ class Search:
                 x1, y1 = self.nodes[node]
                 x2, y2 = self.nodes[goal]
                 return math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
-        
+            # Build graph in form: node -> list of (neighbor, cost)
             def rbfs(current, goal, path, g, f_limit):
                 if current == goal:
                     return path, g, True
-        
+                # Check if the current node is already visited
                 successors = []
                 for (from_node, to_node), cost in self.edges.items():
                     if from_node == current and to_node not in path:
                         h = euclidean_heuristic(to_node, goal)
                         f = g + cost + h
                         successors.append((f, to_node, cost))
-        
+                # if no successors are found, return None
                 if not successors:
                     return None, float('inf'), False
-        
+                # sort the successors by f value
                 successors.sort()
-                
+                # check if the lowest f value is greater than f_limit, if it is, return None
                 while successors:
                     best_f, best_node, best_cost = successors[0]
                     alt_f = successors[1][0] if len(successors) > 1 else float('inf')
-        
+                    # if the best f value is greater than f_limit, return None
                     result, new_f, found = rbfs(best_node, goal, path + [best_node], g + best_cost, min(f_limit, alt_f))
                     if found:
                         return result, new_f, True
-        
+                    # if the best f value is not greater than f_limit, remove the best node from successors and continue the loop
                     successors[0] = (new_f, best_node, best_cost)
                     successors.sort()
         
                 return None, float('inf'), False
-        
+            # Initialize the search
             for goal in self.destinations:
                 path, _, found = rbfs(self.origin, goal, [self.origin], 0, float('inf'))
                 if found:

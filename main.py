@@ -1,6 +1,7 @@
 import sys
 import os
 from search import Search 
+import time
 
 # initialize the dictionary for each different data
 nodes = {}
@@ -89,7 +90,10 @@ if len(sys.argv) == 3 :
         search.edges = edges
         search.origin = origin
         search.destinations = destinations
+        # start = time.time()
         search.algoritm_selection(algorithMethod)
+        # end = time.time()
+        # print(f"Running time: {end - start:.6f} seconds")
     else:
         print("File not found.")
         sys.exit(1)

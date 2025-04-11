@@ -278,7 +278,7 @@ class Search:
         print("No path found.")
 
         
-        # Recursive Best-First Search
+    # Recursive Best-First Search
     def CUS2(self):
             def euclidean_heuristic(node, goal):
                 x1, y1 = self.nodes[node]

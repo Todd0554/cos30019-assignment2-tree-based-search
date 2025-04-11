@@ -281,20 +281,45 @@ class Search:
         
         
     def CUS2(self):
+            def euclidean_heuristic(node, goal):
+                x1, y1 = self.nodes[node]
+                x2, y2 = self.nodes[goal]
+                return math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
         
-        return
+            def rbfs(current, goal, path, g, f_limit):
+                if current == goal:
+                    return path, g, True
         
-    
-    
-    
-       
+                successors = []
+                for (from_node, to_node), cost in self.edges.items():
+                    if from_node == current and to_node not in path:
+                        h = euclidean_heuristic(to_node, goal)
+                        f = g + cost + h
+                        successors.append((f, to_node, cost))
         
-
-
-
-
-
-
-
-
+                if not successors:
+                    return None, float('inf'), False
+        
+                successors.sort()
                 
+                while successors:
+                    best_f, best_node, best_cost = successors[0]
+                    alt_f = successors[1][0] if len(successors) > 1 else float('inf')
+        
+                    result, new_f, found = rbfs(best_node, goal, path + [best_node], g + best_cost, min(f_limit, alt_f))
+                    if found:
+                        return result, new_f, True
+        
+                    successors[0] = (new_f, best_node, best_cost)
+                    successors.sort()
+        
+                return None, float('inf'), False
+        
+            for goal in self.destinations:
+                path, _, found = rbfs(self.origin, goal, [self.origin], 0, float('inf'))
+                if found:
+                    print(f"{goal} {len(path)}")
+                    print(" ".join(map(str, path)))
+                    return
+        
+            print("No path found.")

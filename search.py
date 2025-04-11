@@ -99,8 +99,6 @@ class Search:
         
         return   
         
-
-        
     # breadth-first search 
     def BFS(self):
         # Initialize a queue with the origin node and its path
@@ -128,6 +126,7 @@ class Search:
         # If no path is found
         print("No path found")
         return
+
 
     #   Greedy Best-First Search
     def GBFS(self):
@@ -211,8 +210,10 @@ class Search:
   
     # Dijkstra
     def CUS1(self):
+
         start = self.origin
         dest = set(self.destinations)
+        
         # from origin to each node, the lowest cost of each node, the cost can be updated in the loop 
         # the data structure is like (node: cost)
         min_cost = {start: 0}

@@ -89,14 +89,11 @@ class Search:
         
         return   
         
-
-        
     # breadth-first search 
     def BFS(self):
 
         return
 
-      
     def GBFS(self):
         def heuristic(node, goal):
             """Euclidean distance between node and goal."""
@@ -171,7 +168,6 @@ class Search:
     def CUS1(self):
 
         return
-        
         
     def CUS2(self):
         

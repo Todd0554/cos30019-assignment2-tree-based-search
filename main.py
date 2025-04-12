@@ -1,7 +1,9 @@
 import sys
 import os
-from search import Search 
+from search import Search
 import time
+import tracemalloc
+
 
 # initialize the dictionary for each different data
 nodes = {}
@@ -67,11 +69,18 @@ if len(sys.argv) == 3 :
         # print("Origin:", origin)
         # print("Destinations:", destinations)
 
-        
+        if algorithMethod not in ["DFS", "BFS", "Astar", "GBFS", "CUS1", "CUS2"]:
+            print("Algorithm method not supported.")
+            sys.exit(1)
         if origin is None:
             print("Origin not found.")
             sys.exit(1)
-
+        if not origin in nodes:
+            print("Origin not existed in nodes.")
+            sys.exit(1)
+        if not all(dest in nodes for dest in destinations):
+            print("Destinations not existed in nodes.")
+            sys.exit(1)
         if not destinations:
             print("Destinations not found.")
             sys.exit(1)
@@ -90,10 +99,16 @@ if len(sys.argv) == 3 :
         search.edges = edges
         search.origin = origin
         search.destinations = destinations
-        # start = time.time()
+        start = time.perf_counter()
+        tracemalloc.start()
         search.algoritm_selection(algorithMethod)
-        # end = time.time()
-        # print(f"Running time: {end - start:.6f} seconds")
+        end = time.perf_counter()
+        current, peak = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+        print("Time taken:", end - start, "seconds")
+        print("Memory usage:", current, "bytes")
+        print("Memory peak usage:", peak, "bytes")
+
     else:
         print("File not found.")
         sys.exit(1)

@@ -4,6 +4,7 @@ from search import Search
 import time
 import tracemalloc
 
+
 # initialize the dictionary for each different data
 nodes = {}
 edges = {}
@@ -107,6 +108,7 @@ if len(sys.argv) == 3 :
         print("Time taken:", end - start, "seconds")
         print("Memory usage:", current, "bytes")
         print("Memory peak usage:", peak, "bytes")
+
     else:
         print("File not found.")
         sys.exit(1)

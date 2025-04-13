@@ -99,15 +99,16 @@ if len(sys.argv) == 3 :
         search.edges = edges
         search.origin = origin
         search.destinations = destinations
-        start = time.perf_counter()
-        tracemalloc.start()
+        
+        # start = time.perf_counter()
+        # tracemalloc.start()
         search.algoritm_selection(algorithMethod)
-        end = time.perf_counter()
-        current, peak = tracemalloc.get_traced_memory()
-        tracemalloc.stop()
-        print("Time taken:", end - start, "seconds")
-        print("Memory usage:", current, "bytes")
-        print("Memory peak usage:", peak, "bytes")
+        # end = time.perf_counter()
+        # current, peak = tracemalloc.get_traced_memory()
+        # tracemalloc.stop()
+        # print("Time taken:", end - start, "seconds")
+        # print("Memory usage:", current, "bytes")
+        # print("Memory peak usage:", peak, "bytes")
 
     else:
         print("File not found.")
